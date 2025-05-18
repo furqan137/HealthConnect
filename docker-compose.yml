@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb+srv://goldeneducation786:nELPDRLW1CQbo96A@cluster0.nah9oyp.mongodb.net/healthcare-system?retryWrites=true&w=majority&appName=Cluster0
+      - NEXTAUTH_SECRET=my_ultra_secure_nextauth_secret
+      - NEXTAUTH_URL=http://localhost:3000
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - mongodb
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=healthcare-system
+
+volumes:
+  mongo_data:
